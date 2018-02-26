@@ -1,0 +1,60 @@
+version: "3"
+services:
+  nginx:
+    build:
+      dockerfile: ./appbook/docker/nginx.dockerfile
+      context: .
+    image: rodolfopeixoto/nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    networks: 
+      - "production-network"
+    depends_on:
+      - "node1"
+      - "node2"
+      - "node3"
+  mongodb:
+    image: mongo
+    networks:
+      - "production-network"
+  node1:
+    build:
+      dockerfile: ./appbook/docker/books.dockerfile
+      context: .
+    image: rodolfopeixoto/books
+    container_name: booksapp1
+    ports:
+      - "3000"
+    networks: 
+      - "production-network"
+    depends_on: 
+      - "mongodb"
+  node2:
+    build:
+      dockerfile: ./appbook/docker/books.dockerfile
+      context: .
+    image: rodolfopeixoto/books
+    container_name: booksapp2
+    ports:
+      - "3000"
+    networks:
+      - "production-network"
+    depends_on: 
+      - "mongodb"
+  node3:
+    build:
+      dockerfile: ./appbook/docker/books.dockerfile
+      context: .
+    image: rodolfopeixoto/books
+    container_name: booksapp3
+    ports:
+      - "3000"
+    networks: 
+      - "production-network"
+    depends_on: 
+      - "mongodb"
+networks:
+  production-network:
+    driver: bridge
