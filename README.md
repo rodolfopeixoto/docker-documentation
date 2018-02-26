@@ -145,3 +145,16 @@ O docker trabalha com diversas camadas o que nos da diversas vantagens, tendo em
 ```sh
   docker run -v "/var/www" ubuntu
 ```
+
+Para iniciar o projeto em uma pasta por default, pois o docker pega uma pasta aleatório do host, devemos adicionar a flag -w (work directory), algo
+que devemos observar é que se colocarmos .:[pasta do container] o ponto significar o diretório atual onde eu rodei os comandos docker.
+
+```sh
+docker run -d -p 8080:3000 -v ".:/var/www" -w "/var/www" node npm start
+```
+
+Caso você queira pegar o caminho todo do seu direitório basta usar o pwd comando do unix correto? Vamos lá.
+
+```sh
+docker run -p 8080:3000 -v "$(pwd)/nodejs:/var/www" -w "/var/www" node npm start
+```
